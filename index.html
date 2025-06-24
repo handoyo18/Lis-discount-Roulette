@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Roulette Wheel</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="Winwheel.min.js"></script>
+  <style>
+    body {
+      background-color: #add8e6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      border: 5px solid #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+    }
+    #spinButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <button id="spinButton">🎲 Spin</button>
+
+  <script>
+    let theWheel = new Winwheel({
+      'numSegments': 6,
+      'outerRadius': 230,
+      'segments': [
+        {'fillStyle' : '#00a5f0', 'text' : 'Nendoroid'},{'fillStyle' : '#28a5f0', 'text' : 'Figma'},{'fillStyle' : '#50a5f0', 'text' : 'Try Again'},{'fillStyle' : '#78a5f0', 'text' : 'Voucher'},{'fillStyle' : '#a0a5f0', 'text' : 'Mystery Box'},{'fillStyle' : '#c8a5f0', 'text' : 'Scale Figure'}
+      ],
+      'animation': {
+        'type': 'spinToStop',
+        'duration': 5,
+        'spins': 8,
+        'callbackFinished': function(indicatedSegment) {
+          alert("🎉 You got: " + indicatedSegment.text);
+        }
+      }
+    });
+
+    document.getElementById("spinButton").addEventListener("click", function() {
+      theWheel.stopAnimation(false);
+      theWheel.rotationAngle = 0;
+      theWheel.startAnimation();
+    });
+  </script>
+</body>
+</html>
