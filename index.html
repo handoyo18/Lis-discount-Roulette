@@ -111,7 +111,7 @@
     }
 
       /* mobile responsiveness */
-@media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
   h1 {
     font-size: 40px !important;
     text-align: center;
@@ -126,7 +126,7 @@
   }
 
   .side-panel {
-    margin-left: 0;
+    margin-left: 0 !important;
     margin-top: 20px;
   }
 
@@ -135,14 +135,8 @@
     opacity: 0.8;
   }
 
-  /* STRONGER way to hide the right Zeus */
   .zeus-bg-right {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    transform: none !important;
   }
 
   canvas {
@@ -150,7 +144,6 @@
     height: auto !important;
   }
 }
-
 
     
   </style>
@@ -160,7 +153,7 @@
 
   <!-- Zeus images -->
   <img src="zeus.png" alt="Zeus Left" class="zeus-bg-left" />
-  <img src="zeus.png" alt="Zeus Right" class="zeus-bg-right" />
+  <img src="zeus.png" alt="Zeus Right" class="zeus-bg-right" id="zeusRight" />
 
   <div class="main">
     <div class="wheel-area">
@@ -227,6 +220,23 @@
       theWheel.draw();
       theWheel.startAnimation();
     });
+
+     window.addEventListener("DOMContentLoaded", () => {
+    if (window.innerWidth <= 768) {
+      const rightZeus = document.getElementById("zeusRight");
+      if (rightZeus) {
+        rightZeus.style.display = "none";
+      }
+
+      // Bonus: Also increase the title again, just to be sure
+      const title = document.querySelector("h1");
+      if (title) {
+        title.style.fontSize = "40px";
+      }
+    }
+  });
+
+    
   </script>
 </body>
 </html>
