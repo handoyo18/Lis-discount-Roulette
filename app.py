@@ -3,8 +3,22 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Roulette Wheel", layout="wide")
 
+# Force entire background to light blue
+st.markdown(
+    """
+    <style>
+        body, .stApp {
+            background-color: #add8e6 !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Page Title
 st.markdown("<h1 style='text-align: center;'>🎯 Spin the Wheel!</h1>", unsafe_allow_html=True)
 
+# Roulette Wheel HTML + JS
 html_code = """
 <!DOCTYPE html>
 <html>
@@ -14,40 +28,27 @@ html_code = """
       margin: 0;
       padding: 0;
       height: 100%;
-      background-color: #add8e6; /* 🔹 Full-screen light blue */
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .container {
       display: flex;
-      flex-direction: row;
-      gap: 40px;
+      justify-content: center;
       align-items: center;
+      gap: 40px;
     }
 
-    .wheel-container {
+    .wheel-box {
       position: relative;
       width: 350px;
       height: 350px;
     }
 
-    .wheel {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 8px solid #fff;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      transform-origin: center;
-    }
-
     .pointer {
       position: absolute;
-      top: -30px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate(-50%, -172px); /* Move inside the wheel */
       width: 0;
       height: 0;
       border-left: 20px solid transparent;
@@ -56,8 +57,21 @@ html_code = """
       z-index: 10;
     }
 
-    #spin {
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 8px solid #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transform-origin: center center;
+    }
+
+    .button-container {
+      text-align: center;
       margin-top: 20px;
+    }
+
+    #spin {
       padding: 12px 24px;
       font-size: 18px;
       color: white;
@@ -73,7 +87,7 @@ html_code = """
     }
 
     #result-box {
-      width: 200px;
+      width: 220px;
       min-height: 100px;
       background-color: white;
       border: 2px solid #333;
@@ -88,10 +102,14 @@ html_code = """
 </head>
 <body>
   <div class="container">
-    <div class="wheel-container">
-      <div class="pointer"></div>
-      <canvas id="wheelCanvas" class="wheel" width="350" height="350"></canvas>
-      <button id="spin">🎲 SPIN</button>
+    <div>
+      <div class="wheel-box">
+        <div class="pointer"></div>
+        <canvas id="wheelCanvas" class="wheel" width="350" height="350"></canvas>
+      </div>
+      <div class="button-container">
+        <button id="spin">🎲 SPIN</button>
+      </div>
     </div>
     <div id="result-box">🎁 Waiting to spin...</div>
   </div>
@@ -105,8 +123,7 @@ html_code = """
     const colors = ["#f44336", "#4caf50", "#ffeb3b", "#2196f3", "#ff9800", "#9c27b0"];
     const slices = prizes.length;
     const arc = Math.PI * 2 / slices;
-
-    let currentAngle = 0;
+    let currentRotation = 0;
 
     function drawWheel() {
       for (let i = 0; i < slices; i++) {
@@ -129,16 +146,17 @@ html_code = """
     drawWheel();
 
     document.getElementById("spin").addEventListener("click", () => {
-      const spinAngle = Math.random() * 360 + 1440; // 4+ spins
+      const spinAngle = Math.random() * 360 + 1440; // spin multiple full turns
+      currentRotation += spinAngle;
+
       canvas.style.transition = "transform 4s ease-out";
-      canvas.style.transform = `rotate(${spinAngle + currentAngle}deg)`;
+      canvas.style.transform = `rotate(${currentRotation}deg)`;
 
       setTimeout(() => {
-        const finalAngle = (spinAngle + currentAngle) % 360;
-        const index = Math.floor((360 - finalAngle + arc * 180 / Math.PI / 2) % 360 / (360 / slices)) % slices;
-        const result = prizes[index];
+        const normalized = currentRotation % 360;
+        const index = Math.floor(normalized / (360 / slices));
+        const result = prizes[(slices - index) % slices];
         resultBox.innerHTML = "🎉 You got:<br><strong>" + result + "</strong>";
-        currentAngle = (spinAngle + currentAngle) % 360;
       }, 4000);
     });
   </script>
@@ -146,4 +164,4 @@ html_code = """
 </html>
 """
 
-components.html(html_code, height=600)
+components.html(html_code, height=650)
