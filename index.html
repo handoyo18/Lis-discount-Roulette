@@ -111,37 +111,41 @@
     }
 
       /* mobile responsiveness */
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 36px;
-      text-align: center;
-    }
+@media (max-width: 768px) {
+  h1 {
+    font-size: 40px !important;
+    text-align: center;
+    margin-top: 30px;
+  }
 
-    .main {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+  .main {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
 
-    .side-panel {
-      margin-left: 0;
-      margin-top: 20px;
-    }
+  .side-panel {
+    margin-left: 0;
+    margin-top: 20px;
+  }
 
-    .zeus-bg-right {
-      display: none;
-    }
+  .zeus-bg-left {
+    height: 60%;
+    opacity: 0.8;
+  }
 
-    .zeus-bg-left {
-      height: 60%;
-      opacity: 0.8;
-    }
+  .zeus-bg-right {
+    display: none !important;
+  }
 
-    canvas {
-      width: 90vw !important;
-      height: auto !important;
-    }
-  } 
+  canvas {
+    width: 90vw !important;
+    height: auto !important;
+  }
+}
+
+    
   </style>
 </head>
 <body>
