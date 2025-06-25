@@ -1,250 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  <title>⚡ Lis Discount Gacha 999 ⚡</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="Winwheel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background-color: #add8e6;
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>⚡ Lis Discount Gacha 999 ⚡</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="Winwheel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    h1 {
-      margin-top: 20px;
-      font-size: 28px;
-      color: #333;
-      text-shadow: 1px 1px #ffffff80;
-      z-index: 2;
-    }
-
-    .main {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
-      width: 100%;
-      z-index: 2;
-    }
-
-    .wheel-area {
-      position: relative;
-    }
-
-    canvas {
-      background-color: #add8e6;
-      border-radius: 50%;
-    }
-
-    .pointer {
-      position: absolute;
-      top: 5px;
-      left: 50%;
-      transform: translateX(-50%) rotate(180deg);
-      width: 0;
-      height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-bottom: 30px solid red;
-      z-index: 10;
-    }
-
-    .side-panel {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: 50px;
-    }
-
-    #resultBox {
-      padding: 20px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      min-width: 200px;
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      margin-bottom: 20px;
-    }
-
-    #spinButton {
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: "Comic Sans MS", cursive, sans-serif;
-    }
-
-    .zeus-bg-left,
-    .zeus-bg-right {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 90%;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 1;
-    }
-
-    .zeus-bg-left {
-      left: 0;
-    }
-
-    .zeus-bg-right {
-      right: 0;
-      transform: translateY(-50%) scaleX(-1); /* Flip horizontally */
-    }
-
-      /* mobile responsiveness */
-   @media screen and (max-width: 768px) {
-  h1 {
-    font-size: 24px !important;
-    text-align: center;
-    margin-top: 12px;
-  }
-
-  .main {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-
-  .side-panel {
-    margin-left: 0 !important;
-    margin-top: 20px;
-  }
-
-  .zeus-bg-left {
-    height: 50%;
-    opacity: 1;
-    top: 30%;       /* move it up */
-    left: -60px;    /* move it to the left */
-    transform: translateY(-50%) scale(0.9); /* scale slightly smaller */
-  }
-
-  .zeus-bg-right {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    transform: none !important;
-  }
-
-  canvas {
-    width: 90vw !important;
-    height: auto !important;
-  }
-}
-
-    
-  </style>
-</head>
-<body>
-  <h1>⚡ Lis Discount Gacha 999 ⚡</h1>
-
-  <!-- Zeus images -->
-  <img src="zeus.png" alt="Zeus Left" class="zeus-bg-left" />
-  <img src="zeus.png" alt="Zeus Right" class="zeus-bg-right" id="zeusRight" />
-
-  <div class="main">
-    <div class="wheel-area">
-      <div class="pointer"></div>
-      <canvas id="canvas" width="500" height="500"></canvas>
-    </div>
-
-    <div class="side-panel">
-      <div id="resultBox">🎯 Result: -</div>
-      <button id="spinButton">🎲 Spin</button>
-    </div>
-  </div>
-
-  <script>
-    let spinCount = 0;
-
-    let theWheel = new Winwheel({
-      'canvasId': 'canvas',
-      'outerRadius': 230,
-      'lineWidth': 0,
-      'numSegments': 15,
-      'segments': [
-        { 'fillStyle': '#FFD700', 'text': '50%', 'size': 12 },   // Smaller size
-        { 'fillStyle': '#5c95dc', 'text': '20%', 'size': 26 },
-        { 'fillStyle': '#8bbbe8', 'text': '35%' },
-        { 'fillStyle': '#326fc3', 'text': '10%' },
-        { 'fillStyle': '#79aee3', 'text': '30%' },
-        { 'fillStyle': '#b399ff', 'text': '15%' },
-        { 'fillStyle': '#3a7bcc', 'text': '10%' },
-        { 'fillStyle': '#679fe0', 'text': '25%' },
-        { 'fillStyle': '#c0a5ff', 'text': '15%' },
-        { 'fillStyle': '#aaaaaa', 'text': '5%' },
-        { 'fillStyle': '#2457b2', 'text': '10%' },
-        { 'fillStyle': '#a0d2eb', 'text': '40%' },
-        { 'fillStyle': '#538bd7', 'text': '20%' },
-        { 'fillStyle': '#f0a1d1', 'text': '10%' },
-        { 'fillStyle': '#add8e6 ', 'text': '10%', 'size': 28  }
-      ],
-      'animation': {
-        'type': 'spinToStop',
-        'duration': 6,
-        'spins': 10,
-        'callbackFinished': function(indicatedSegment) {
-          spinCount++;
-
-          document.getElementById("resultBox").innerHTML =
-            "🎯 Result: <br><strong>" + indicatedSegment.text + "</strong>";
-
-          // Confetti only for 50%
-          if (indicatedSegment.text === "50%") {
-            confetti({
-              particleCount: 120,
-              spread: 90,
-              origin: { y: 0.3 }
-            });
-          }
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #add8e6;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-      }
-    });
 
-    document.getElementById("spinButton").addEventListener("click", function () {
-      theWheel.stopAnimation(false);
-      theWheel.rotationAngle = 0;
-      theWheel.draw();
-      theWheel.startAnimation();
-    });
+        h1 {
+            margin-top: 20px;
+            font-size: 28px;
+            color: #333;
+            text-shadow: 1px 1px #ffffff80;
+            z-index: 2;
+        }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const rightZeus = document.querySelector(".zeus-bg-right");
-    if (window.innerWidth <= 768 && rightZeus) {
-      rightZeus.style.display = "none";
-    }
+        .main {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+            z-index: 2;
+        }
 
-    const title = document.querySelector("h1");
-    if (window.innerWidth <= 768 && title) {
-      title.style.fontSize = "40px";
-    }
-  });
+        .wheel-area {
+            position: relative;
+        }
 
+        canvas {
+            background-color: #add8e6;
+            border-radius: 50%;
+        }
 
-    
-  </script>
+        .pointer {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 30px solid red;
+            z-index: 10;
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 50px;
+        }
+
+        #resultBox {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 200px;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            margin-bottom: 20px;
+        }
+
+        #spinButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        .zeus-bg-left,
+        .zeus-bg-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 90%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        .zeus-bg-left {
+            left: 0;
+        }
+
+        .zeus-bg-right {
+            right: 0;
+            transform: translateY(-50%) scaleX(-1);
+            /* Flip horizontally */
+        }
+
+        /* mobile responsiveness */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 24px !important;
+                text-align: center;
+                margin-top: 12px;
+            }
+
+            .main {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+            }
+
+            .side-panel {
+                margin-left: 0 !important;
+                margin-top: 20px;
+            }
+
+            .zeus-bg-left {
+                height: 50%;
+                opacity: 1;
+                top: 30%;
+                /* move it up */
+                left: -60px;
+                /* move it to the left */
+                transform: translateY(-50%) scale(0.9);
+                /* scale slightly smaller */
+            }
+
+            .zeus-bg-right {
+                height: 50%;
+                opacity: 1;
+                top: 30%;
+                /* move it up */
+                right: -60px;
+                /* move it to the right */
+                transform: translateY(-50%) scale(0.9);
+                /* scale slightly smaller */
+            }
+
+            canvas {
+                width: 90vw !important;
+                height: auto !important;
+            }
+        }
+
+        canvas[style*="position: fixed"] {
+            z-index: 0 !important;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>⚡ Lis Discount Gacha 999 ⚡</h1>
+
+    <!-- Zeus images -->
+    <img src="zeus.png" alt="Zeus Left" class="zeus-bg-left" />
+    <img src="zeus.png" alt="Zeus Right" class="zeus-bg-right" id="zeusRight" />
+
+    <div class="main">
+        <div class="wheel-area">
+            <div class="pointer"></div>
+            <canvas id="canvas" width="500" height="500"></canvas>
+        </div>
+
+        <div class="side-panel">
+            <div id="resultBox">🎯 Result: -</div>
+            <button id="spinButton">🎲 Spin</button>
+        </div>
+    </div>
+
+    <script>
+        let spinCount = 0;
+
+        let theWheel = new Winwheel({
+            'canvasId': 'canvas',
+            'outerRadius': 230,
+            'lineWidth': 0,
+            'numSegments': 15,
+            'segments': [
+                { 'fillStyle': '#FFD700', 'text': '50%', 'size': 12 },   // Smaller size
+                { 'fillStyle': '#5c95dc', 'text': '20%', 'size': 26 },
+                { 'fillStyle': '#8bbbe8', 'text': '35%' },
+                { 'fillStyle': '#326fc3', 'text': '10%' },
+                { 'fillStyle': '#79aee3', 'text': '30%' },
+                { 'fillStyle': '#b399ff', 'text': '15%' },
+                { 'fillStyle': '#3a7bcc', 'text': '10%' },
+                { 'fillStyle': '#679fe0', 'text': '25%' },
+                { 'fillStyle': '#c0a5ff', 'text': '15%' },
+                { 'fillStyle': '#aaaaaa', 'text': '5%' },
+                { 'fillStyle': '#2457b2', 'text': '10%' },
+                { 'fillStyle': '#a0d2eb', 'text': '40%' },
+                { 'fillStyle': '#538bd7', 'text': '20%' },
+                { 'fillStyle': '#f0a1d1', 'text': '10%' },
+                { 'fillStyle': '#add8e6 ', 'text': '10%', 'size': 28 }
+            ],
+            'animation': {
+                'type': 'spinToStop',
+                'duration': 6,
+                'spins': 10,
+                'callbackFinished': function (indicatedSegment) {
+                    spinCount++;
+
+                    document.getElementById("resultBox").innerHTML =
+                        "🎯 Result: <br><strong>" + indicatedSegment.text + "</strong>";
+
+                    // Confetti only for 50%
+                    if (indicatedSegment.text === "50%") {
+                        confetti({
+                            particleCount: 120,
+                            spread: 90,
+                            origin: { y: 0.3 }
+                        });
+                    }
+                }
+            }
+        });
+
+        document.getElementById("spinButton").addEventListener("click", function () {
+            theWheel.stopAnimation(false);
+            theWheel.rotationAngle = 0;
+            theWheel.draw();
+            theWheel.startAnimation();
+        });
+
+        /*         window.addEventListener("DOMContentLoaded", () => {
+                    const rightZeus = document.querySelector(".zeus-bg-right");
+                    if (window.innerWidth <= 768 && rightZeus) {
+                        rightZeus.style.display = "none";
+                    }
+        
+                    const title = document.querySelector("h1");
+                    if (window.innerWidth <= 768 && title) {
+                        title.style.fontSize = "40px";
+                    }
+                }); */
+    </script>
 </body>
+
 </html>
