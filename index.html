@@ -114,6 +114,13 @@
             /* Flip horizontally */
         }
 
+        .footer-desktop {
+            display: block;
+        }
+        .footer-mobile {
+            display: none;
+        }
+
         .footer {
             width: 100%;
             padding: 10px;
@@ -128,6 +135,14 @@
 
         /* mobile responsiveness */
         @media screen and (max-width: 768px) {
+            .footer-desktop {
+                display: none;
+            }
+            .footer-mobile {
+                display: block;
+                margin-bottom: 50px;
+            }
+            
             h1 {
                 font-size: 24px !important;
                 text-align: center;
@@ -171,9 +186,6 @@
             canvas {
                 width: 90vw !important;
                 height: auto !important;
-            }
-            .footer {
-                margin-bottom: 50px;
             }
         }
 
@@ -223,7 +235,7 @@
                   { fillStyle: '#8bbbe8', text: '30%' },   // 6
                   { fillStyle: '#79aee3', text: '20%' },   // 7
                   { fillStyle: '#3a7bcc', text: '10%' },   // 8
-                  { fillStyle: '#3a7bcc', text: '25%' },   // 9
+                  { fillStyle: '#79aee3', text: '25%' },   // 9
                   { fillStyle: '#3a7bcc', text: '10%' },   //10
                   { fillStyle: '#79aee3', text: '20%' },   //11
                   { fillStyle: '#3a7bcc', text: '10%' },   //12
@@ -251,10 +263,10 @@
                   { fillStyle: '#3a7bcc', text: '10%' },   //34
                   { fillStyle: '#79aee3', text: '20%' },   //35
                   { fillStyle: '#3a7bcc', text: '10%' },   //36
-                  { fillStyle: '#3a7bcc', text: '25%' },   //37
+                  { fillStyle: '#79aee3', text: '25%' },   //37
                   { fillStyle: '#3a7bcc', text: '10%' },   //38
                   { fillStyle: '#79aee3', text: '20%' },   //39
-                  { fillStyle: '#5c95dc', text: '35%' },   //40
+                  { fillStyle: '#FF7F50', text: '35%' },   //40
                   { fillStyle: '#3a7bcc', text: '10%' },   //41
                   { fillStyle: '#8bbbe8', text: '30%' },   //42
                   { fillStyle: '#79aee3', text: '20%' },   //43
@@ -295,8 +307,12 @@
         });
     </script>
 </body>
-<footer class="footer">
-    &copy; 2025 Lichtschein Hobby Store | Follow <strong>@lishobbystore</strong> on Instagram for more promos! 🚀
-</footer>
+    <div class="footer footer-desktop">
+        &copy; 2025 Lichtschein Hobby Store | Follow @lishobbystore on Instagram for more promos! 🚀
+    </div>
+    <div class="footer footer-mobile">
+        &copy; 2025 Lichtschein Hobby Store
+        Follow @lishobbystore on Instagram for more promos!
+    </div>
 
 </html>
